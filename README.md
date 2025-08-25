@@ -28,15 +28,15 @@ QuizSwing/
 
 1.Clone the repository:
 
-# git clone https://github.com/UGURAKSAHIN/QuizApp.git
+- git clone https://github.com/UGURAKSAHIN/QuizApp.git
 
 2.Debug Java file:
 
-# javac QuizApp.java
+- javac QuizApp.java
 
 3.Run the application:
 
-java QuizApp
+- java QuizApp
 
 # Previews
 
