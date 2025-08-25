@@ -40,22 +40,18 @@ java QuizApp
 
 # Previews
 
-<img width="2240" height="1400" alt="Screenshot (77)" src="https://github.com/user-attachments/assets/ede1e942-d322-45f9-a79f-281fe8d00679" />
+<img width="2240" height="1400" alt="Screenshot (77)" src="https://github.com/user-attachments/assets/c749be4f-7930-4b20-9bef-b1573ec28811" />
 
+<img width="2240" height="1400" alt="Screenshot (78)" src="https://github.com/user-attachments/assets/8c0c5377-f4a1-49db-bb63-4272b92dd5bd" />
 
-<img width="2240" height="1400" alt="Screenshot (78)" src="https://github.com/user-attachments/assets/ea63d58f-4807-4cc2-b961-7767b4634bd0" />
+<img width="2240" height="1400" alt="Screenshot (79)" src="https://github.com/user-attachments/assets/dd6a7367-9018-44c1-a4b9-438d1749db5d" />
 
+<img width="2240" height="1400" alt="Screenshot (80)" src="https://github.com/user-attachments/assets/1480fd2a-4dcc-4fbc-8150-d7f3a6599096" />
 
-<img width="2240" height="1400" alt="Screenshot (79)" src="https://github.com/user-attachments/assets/41aa7c37-9281-4d73-81e8-43ad54b3beb6" />
+<img width="2240" height="1400" alt="Screenshot (81)" src="https://github.com/user-attachments/assets/882951c6-520c-4443-b130-30e1300a4f90" />
 
+<img width="2240" height="1400" alt="Screenshot (82)" src="https://github.com/user-attachments/assets/6ec729fc-c027-47c3-b403-e411b756ef12" />
 
-<img width="2240" height="1400" alt="Screenshot (80)" src="https://github.com/user-attachments/assets/21f3a0b8-d812-4d19-97a6-1566d3d033a5" />
-
-
-<img width="2240" height="1400" alt="Screenshot (81)" src="https://github.com/user-attachments/assets/dc2cc1b7-eb06-462e-8c1e-3eb01bb45f41" />
-
-
-<img width="2240" height="1400" alt="Screenshot (82)" src="https://github.com/user-attachments/assets/3bd0a638-d248-4aee-8a50-b13d14e6ae4a" />
 
 # Contribution
 
