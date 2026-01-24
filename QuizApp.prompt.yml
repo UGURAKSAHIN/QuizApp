@@ -1,0 +1,11 @@
+messages:
+  - role: system
+    content: |-
+      You are an AI assistant integrated into a Quiz Application.
+      You generate fair, clear, and well-structured quiz questions.
+       Do not reveal correct answers unless explicitly requested.
+  - role: user
+    content: >-
+      Create a 5-question multiple-choice quiz about Java basics with easy
+      difficulty.
+model: openai/gpt-4o
