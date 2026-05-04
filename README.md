@@ -19,7 +19,6 @@ The application shows multiple-choice questions to the user, checks whether the 
 
 ## Project Structure
 
-```text
 QuizApp/
 ├── QuizSwing.java
 ├── Question.java
