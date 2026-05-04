@@ -1,38 +1,40 @@
 # QuizApp
 
 # About Project
-This project is a fundamental Quiz application by using Java Swing library. Application is directing multiple question to user and provide answer into the duration.After user answer the question is controlled to correct/incorrect and result showing in the score table.
+QuizApp is a basic quiz application developed with Java Swing.  
+The application shows multiple-choice questions to the user, checks whether the selected answer is correct or incorrect, and displays the final score.
 
 # Features
 
-- 📋 Multiple Questions
+- 📋 Multiple-choice questions
 - ⏳ Timer
-- ✅Correct/Incorrect controlling
-- 🏆 Score Table
-- 🎨 swing UI interface
+- ✅ Correct / incorrect answer checking
+- 🏆 Score display
+- 🎨 Java Swing user interface
 
 # Technology Stack
 
-Programming Language : Java
-GUI Library : Swing
+- Java
+- Java Swing
 
-# Project Structure
+## Project Structure
 
-QuizSwing/
-│
-├── QuizSwing.java 
-├── Question.java    
-└── README.md  
+```text
+QuizApp/
+├── QuizSwing.java
+├── Question.java
+└── README.md
 
 # Running
 
 1.Clone the repository:
 
-- git clone https://github.com/UGURAKSAHIN/QuizApp.git
+git clone https://github.com/UGURAKSAHIN/QuizApp.git
+cd QuizApp
 
 2.Debug Java file:
 
-- javac QuizApp.java
+javac QuizSwing.java Question.java
 
 3.Run the application:
 
@@ -55,25 +57,12 @@ QuizSwing/
 
 # Contribution
 
-If you want to contribute to project:
-
-1.Fork to this repository
-2.Compose new branch
-3. To commit changes
-4.Send your branch
-5.Open new pull request
+- Fork this repository.
+- Create a new branch.
+- Commit your changes.
+- Push your branch.
+- Open a pull request.
 
 # License
 
 This project licensed with Apache 2.0 text.
-
-
-
-
-
-
-
-
-
-
-
