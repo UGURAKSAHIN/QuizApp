@@ -1,72 +1,69 @@
-import javax.swing.JPanel;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JRadioButton;
-import javax.swing.SwingConstants;
-import javax.swing.JButton;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.Font;
-import java.awt.Color;
 import java.awt.event.ActionListener;
-import javax.swing.Timer;
 
 public class QuizSwing extends JFrame implements ActionListener {
 
-    String[] questions = {
+    private static final int NUM_OPTIONS = 4;
+    private static final int TIME_LIMIT = 15;
+
+    private final String[] questions = {
             "What is the capital of France?",
             "How many continents are there on Earth?",
             "Which country is known as the 'Land of the Rising Sun'?",
             "What is the largest country in the world by land area?",
             "What is the largest planet in our solar system?"
     };
-    String[][] options = {
+
+    private final String[][] options = {
             {"Berlin", "Madrid", "Paris", "Rome"},
             {"5", "6", "7", "8"},
             {"Japan", "South Korea", "China", "Thailand"},
             {"Canada", "Russia", "China", "USA"},
             {"Earth", "Jupiter", "Mars", "Saturn"}
     };
-    char[] answers = {'C', 'C', 'A', 'B', 'B'};
-    char[] userAnswers = new char[questions.length];
 
-    private static final int NUM_OPTIONS = 4;
+    private final char[] answers = {'C', 'C', 'A', 'B', 'B'};
+    private final char[] userAnswers = new char[questions.length];
 
-    int currentIndex = 0;
-    int score = 0;
-    int timePerQuestion = 15;
-    private static final int NUM_QUESTIONS = 5;
+    private int currentIndex = 0;
+    private int score = 0;
+    private int timeLeft = TIME_LIMIT;
 
-    JLabel questionLabel = new JLabel();
-    JRadioButton[] optionButtons = new JRadioButton[NUM_OPTIONS];
-    ButtonGroup optionsGroup = new ButtonGroup();
-    JButton nextButton = new JButton("Next");
-    JButton restartButton = new JButton("Restart");
-    JLabel resultLabel = new JLabel();
-    JLabel timerLabel = new JLabel("Time: 15s");
+    private final JLabel questionLabel = new JLabel();
+    private final JRadioButton[] optionButtons = new JRadioButton[NUM_OPTIONS];
+    private final ButtonGroup optionsGroup = new ButtonGroup();
 
-    Timer timer;
+    private final JButton nextButton = new JButton("Next");
+    private final JButton restartButton = new JButton("Restart");
+
+    private final JLabel resultLabel = new JLabel();
+    private final JLabel timerLabel = new JLabel("Time: " + TIME_LIMIT + "s");
+
+    private Timer timer;
 
     public QuizSwing() {
         setTitle("Quiz Application");
-        setSize(600, 400);
+        setSize(700, 450);
         setLayout(new BorderLayout());
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
 
         add(setupQuestionPanel(), BorderLayout.CENTER);
         add(setupBottomPanel(), BorderLayout.SOUTH);
         setupTimerLabel();
-        setupTimer();
 
+        setupTimer();
         loadQuestion();
+
         setVisible(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     private JPanel setupQuestionPanel() {
-        JPanel questionPanel = new JPanel(new GridLayout(0, 1));
+        JPanel questionPanel = new JPanel(new GridLayout(0, 1, 10, 10));
+        questionPanel.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
+
         questionLabel.setFont(new Font("Arial", Font.BOLD, 18));
         questionPanel.add(questionLabel);
 
@@ -77,157 +74,187 @@ public class QuizSwing extends JFrame implements ActionListener {
             optionsGroup.add(optionButtons[i]);
             questionPanel.add(optionButtons[i]);
         }
+
         return questionPanel;
     }
+
     private JPanel setupBottomPanel() {
-        JPanel bottomPanel = new JPanel(new GridLayout(1, 3));
+        JPanel bottomPanel = new JPanel(new GridLayout(1, 3, 10, 10));
+        bottomPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+
         nextButton.addActionListener(this);
         restartButton.addActionListener(this);
+
+        resultLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
         bottomPanel.add(nextButton);
         bottomPanel.add(restartButton);
         bottomPanel.add(resultLabel);
+
         return bottomPanel;
     }
-    
 
     private void setupTimerLabel() {
-        timerLabel.setFont(new Font("Arial", Font.BOLD, 14));
+        timerLabel.setFont(new Font("Arial", Font.BOLD, 16));
         timerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        timerLabel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
         add(timerLabel, BorderLayout.NORTH);
     }
 
-    private void setupTimer(){
-
+    private void setupTimer() {
         timer = new Timer(1000, e -> {
-        timePerQuestion--;
-        timerLabel.setText("Time: " + timePerQuestion);
-        if (timePerQuestion == 0) {
-            timer.stop();
-            resultLabel.setText("Time's up! Moving to next question.");
-            resultLabel.setForeground(Color.RED);
-            currentIndex++;
-            loadQuestion();
+            timeLeft--;
+            timerLabel.setText("Time: " + timeLeft + "s");
 
-        }
-    });
-}
+            if (timeLeft <= 0) {
+                timer.stop();
+                userAnswers[currentIndex] = '\0';
+                resultLabel.setText("Time's up!");
+                resultLabel.setForeground(Color.RED);
 
-    private void resetTimer(){
-        timePerQuestion = 15;
-        timerLabel.setText("Time: " + timePerQuestion);
-        if(timer.isRunning()){
-
-            timer.stop();
-
-        }
-        timer.start();
+                currentIndex++;
+                loadQuestion();
+            }
+        });
     }
 
-    private void showFinalResults() {
-        questionLabel.setText("Quiz Finished!");
-        for (JRadioButton btn : optionButtons) {
-            btn.setVisible(false);
-        }
-        nextButton.setEnabled(false);
-        if (timer != null) {
+    private void resetTimer() {
+        timeLeft = TIME_LIMIT;
+        timerLabel.setText("Time: " + timeLeft + "s");
+
+        if (timer.isRunning()) {
             timer.stop();
         }
-        resultLabel.setText("Your score: " + score + "/" + NUM_QUESTIONS);
-        resultLabel.setForeground(Color.RED);
+
+        timer.start();
     }
 
     private void loadQuestion() {
         if (currentIndex < questions.length) {
             questionLabel.setText((currentIndex + 1) + ". " + questions[currentIndex]);
+
             for (int i = 0; i < NUM_OPTIONS; i++) {
-                optionButtons[i].setText(options[currentIndex][i]);
+                optionButtons[i].setText((char) ('A' + i) + ") " + options[currentIndex][i]);
+                optionButtons[i].setVisible(true);
             }
+
             optionsGroup.clearSelection();
+            resultLabel.setText("");
+            nextButton.setEnabled(true);
+
             resetTimer();
-
-        } else {
-            showFinalResults();
-            
-        }
-    }
-
-    private void restartQuiz(){
-        currentIndex = 0;
-        score = 0;
-        for(int i = 0; i < userAnswers.length; i++){
-            userAnswers[i] = '\0';
-        }
-        for(JRadioButton btn : optionButtons){
-            btn.setVisible(true);
-        }
-        nextButton.setEnabled(true);
-        resultLabel.setText("");
-    }
-
-    private void showSummaryScreen(){
-
-        JPanel summJPanel = new JPanel();
-        summJPanel.setLayout(new BoxLayout(summJPanel, BoxLayout.Y_AXIS));
-
-        JLabel titlelabel = new JLabel("Quiz Summary");
-        titlelabel.setFont(new Font("Arial", Font.BOLD, 20));
-        titlelabel.setAlignmentX(CENTER_ALIGNMENT);
-        summJPanel.add(titlelabel);
-        summJPanel.add(new JLabel(" "));
-
-        for(int i = 0; i < questions.length; i++){
-            String correctAnswers = String.valueOf(answers[i]);
-            String userAnswer = userAnswers[i] == '\0' ? "No Answer" : String.valueOf(userAnswers[i]);
-
-            JLabel qLabel = new JLabel((i+1) + ". " + questions[i]);
-            summJPanel.add(qLabel);
-            JLabel questionResult = new JLabel();
-            questionResult.setFont(new Font("Arial", Font.PLAIN, 16));
-            summJPanel.add(questionResult);
-
-            JLabel answersLabel = new JLabel("Your Answer: " + userAnswer + " | Correct Answer: " + correctAnswers);
-            if(userAnswers[i] == answers[i]){
-                answersLabel.setForeground(Color.GREEN.darker());
-            }else{
-                answersLabel.setForeground(Color.RED.darker());
-            }
-            summJPanel.add(answersLabel);
-            summJPanel.add(new JLabel(" "));
-
-        }
-        getContentPane().removeAll();
-        add(summJPanel, BorderLayout.CENTER);
-
-        revalidate();
-        repaint();
-
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == nextButton) {
-            if (optionsGroup.getSelection() == null) {
-                resultLabel.setText("Please select an answer before proceeding!");
-                resultLabel.setForeground(Color.RED);
-                return;
-            }
-
-            char selectedOption = optionsGroup.getSelection().getActionCommand().charAt(0);
-            userAnswers[currentIndex] = selectedOption;
-
-            if (selectedOption == answers[currentIndex]) {
-                score++;
-            }
-            currentIndex++;
-            loadQuestion();
-        } else if (e.getSource() == restartButton) {
-            restartQuiz();
         } else {
             showSummaryScreen();
         }
     }
 
+    private void checkAnswerAndMoveNext() {
+        if (optionsGroup.getSelection() == null) {
+            resultLabel.setText("Please select an answer!");
+            resultLabel.setForeground(Color.RED);
+            return;
+        }
+
+        char selectedOption = optionsGroup.getSelection().getActionCommand().charAt(0);
+        userAnswers[currentIndex] = selectedOption;
+
+        if (selectedOption == answers[currentIndex]) {
+            score++;
+        }
+
+        currentIndex++;
+        loadQuestion();
+    }
+
+    private void restartQuiz() {
+        currentIndex = 0;
+        score = 0;
+
+        for (int i = 0; i < userAnswers.length; i++) {
+            userAnswers[i] = '\0';
+        }
+
+        getContentPane().removeAll();
+
+        add(setupQuestionPanel(), BorderLayout.CENTER);
+        add(setupBottomPanel(), BorderLayout.SOUTH);
+        setupTimerLabel();
+
+        loadQuestion();
+
+        revalidate();
+        repaint();
+    }
+
+    private void showSummaryScreen() {
+        if (timer != null) {
+            timer.stop();
+        }
+
+        getContentPane().removeAll();
+
+        JPanel summaryPanel = new JPanel();
+        summaryPanel.setLayout(new BoxLayout(summaryPanel, BoxLayout.Y_AXIS));
+        summaryPanel.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
+
+        JLabel titleLabel = new JLabel("Quiz Summary");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JLabel scoreLabel = new JLabel("Your score: " + score + "/" + questions.length);
+        scoreLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        scoreLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        summaryPanel.add(titleLabel);
+        summaryPanel.add(Box.createVerticalStrut(10));
+        summaryPanel.add(scoreLabel);
+        summaryPanel.add(Box.createVerticalStrut(20));
+
+        for (int i = 0; i < questions.length; i++) {
+            String userAnswer = userAnswers[i] == '\0' ? "No Answer" : String.valueOf(userAnswers[i]);
+            String correctAnswer = String.valueOf(answers[i]);
+
+            JLabel question = new JLabel((i + 1) + ". " + questions[i]);
+            question.setFont(new Font("Arial", Font.BOLD, 14));
+
+            JLabel answerInfo = new JLabel("Your Answer: " + userAnswer + " | Correct Answer: " + correctAnswer);
+            answerInfo.setFont(new Font("Arial", Font.PLAIN, 14));
+
+            if (userAnswers[i] == answers[i]) {
+                answerInfo.setForeground(Color.GREEN.darker());
+            } else {
+                answerInfo.setForeground(Color.RED.darker());
+            }
+
+            summaryPanel.add(question);
+            summaryPanel.add(answerInfo);
+            summaryPanel.add(Box.createVerticalStrut(10));
+        }
+
+        JButton restartSummaryButton = new JButton("Restart Quiz");
+        restartSummaryButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        restartSummaryButton.addActionListener(e -> restartQuiz());
+
+        summaryPanel.add(Box.createVerticalStrut(20));
+        summaryPanel.add(restartSummaryButton);
+
+        JScrollPane scrollPane = new JScrollPane(summaryPanel);
+        add(scrollPane, BorderLayout.CENTER);
+
+        revalidate();
+        repaint();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == nextButton) {
+            checkAnswerAndMoveNext();
+        } else if (e.getSource() == restartButton) {
+            restartQuiz();
+        }
+    }
+
     public static void main(String[] args) {
-        new QuizSwing();
+        SwingUtilities.invokeLater(QuizSwing::new);
     }
 }
